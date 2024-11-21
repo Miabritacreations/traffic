@@ -1,85 +1,116 @@
-# icp_rust_message_board_contract
+# Decentralized Traffic Rerouting App
 
-### Requirements
-* rustc 1.64 or higher
-```bash
-$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
-$ source "$HOME/.cargo/env"
-```
-* rust wasm32-unknown-unknown target
-```bash
-$ rustup target add wasm32-unknown-unknown
-```
-* candid-extractor
-```bash
-$ cargo install candid-extractor
-```
-* install `dfx`
-```bash
-$ DFX_VERSION=0.15.0 sh -ci "$(curl -fsSL https://sdk.dfinity.org/install.sh)"
-$ echo 'export PATH="$PATH:$HOME/bin"' >> "$HOME/.bashrc"
-$ source ~/.bashrc
-$ dfx start --background
-```
+## Overview
 
-If you want to start working on your project right away, you might want to try the following commands:
+This project implements a **decentralized traffic rerouting app** built on the Internet Computer Protocol (ICP). The app is designed to crowdsource real-time traffic data, allowing users to avoid congestion, report road conditions, and earn rewards for their contributions.
 
-```bash
-$ cd icp_rust_boilerplate/
-$ dfx help
-$ dfx canister --help
-```
+With gamified elements and blockchain-backed accuracy, the app transforms daily driving into a dynamic, rewarding, and community-driven experience.
 
-## Update dependencies
+---
 
-update the `dependencies` block in `/src/{canister_name}/Cargo.toml`:
-```
-[dependencies]
-candid = "0.9.9"
-ic-cdk = "0.11.1"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1.0"
-ic-stable-structures = { git = "https://github.com/lwshang/stable-structures.git", branch = "lwshang/update_cdk"}
-```
+## Features
 
-## did autogenerate
+### Core Functionalities
+1. **Traffic Reports**:
+   - Users can create, read, update, and delete traffic reports.
+   - Reports include details like description, location, severity, and timestamp.
+   - Seamlessly update road statuses or resolve issues once addressed.
 
-Add this script to the root directory of the project:
-```
-https://github.com/buildwithjuno/juno/blob/main/scripts/did.sh
-```
+2. **User Profiles**:
+   - Profiles track user contributions, points, and rewards (Route Tokens).
+   - Users earn points for submitting reports and contributing to the community.
+   - CRUD operations allow managing user accounts dynamically.
 
-Update line 16 with the name of your canister:
-```
-https://github.com/buildwithjuno/juno/blob/main/scripts/did.sh#L16
-```
+3. **Gamified Experience**:
+   - Users are rewarded for contributing to the app, earning points and tokens.
+   - Contributions like accurate reporting or verifying conditions are incentivized.
 
-After this run this script to generate Candid.
-Important note!
+4. **Decentralized and Secure**:
+   - Built on the ICP for decentralized storage and logic execution.
+   - Data integrity is maintained through blockchain technology.
 
-You should run this script each time you modify/add/remove exported functions of the canister.
-Otherwise, you'll have to modify the candid file manually.
+### Error Handling
+- Robust error messages for CRUD operations:
+  - `NotFound`: Data (report or user) not found in the system.
+  - `AlreadyExists`: Duplicate entries are not allowed.
+  - `OperationFailed`: General errors during updates or data modifications.
 
-Also, you can add package json with this content:
-```
-{
-    "scripts": {
-        "generate": "./did.sh && dfx generate",
-        "gen-deploy": "./did.sh && dfx generate && dfx deploy -y"
-      }
-}
-```
+---
 
-and use commands `npm run generate` to generate candid or `npm run gen-deploy` to generate candid and to deploy a canister.
+## Technologies Used
 
-## Running the project locally
+- **Programming Language**: Rust
+- **Framework**: Internet Computer SDK (IC SDK)
+- **Libraries**:
+  - `ic-stable-structures`: For stable memory storage.
+  - `serde` and `candid`: For serialization and deserialization.
+  - `ic_cdk`: For ICP-specific operations.
 
-If you want to test your project locally, you can use the following commands:
+---
+
+## Prerequisites
+
+- [DFINITY SDK](https://sdk.dfinity.org/)
+- [Rust](https://www.rust-lang.org/) (latest stable version)
+- [Cargo](https://doc.rust-lang.org/cargo/) (comes with Rust)
+
+## Project Setup
+
+### 1. Install DFINITY SDK
 
 ```bash
-# Starts the replica, running in the background
-$ dfx start --background
-
-# Deploys your canisters to the replica and generates your candid interface
-$ dfx deploy
+sh -ci "$(curl -fsSL https://sdk.dfinity.org/install.sh)"
 ```
+
+### 2. Install Rust and add the WebAssembly target
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup target add wasm32-unknown-unknown
+```
+
+### 3. Clone and Navigate to the Project
+
+```bash
+git clone https://github.com/miabritacreations/traffic.git
+cd traffic
+```
+
+### 4. Project Structure
+
+Ensure your project has the following structure:
+
+```
+dairy/
+├── Cargo.toml
+├── dfx.json
+└── src/
+    └── dairy_backend/
+           ├── src
+           |    └── lib.rs
+           └── dairy_backend.did
+```
+
+## Building and Deploying
+
+1. Start the local Internet Computer network:
+
+```bash
+dfx start --background
+```
+
+2. Deploy the canister:
+
+```bash
+dfx deploy
+```
+
+## Accessing the Candid UI
+
+You can access the Candid UI to interact with your canister visually. After deploying, the console will display a link similar to:
+
+```
+http://127.0.0.1:8000/?canisterId=<canister-id>
+```
+
+Replace `<canister-id>` with the actual canister ID from the deployment output.
