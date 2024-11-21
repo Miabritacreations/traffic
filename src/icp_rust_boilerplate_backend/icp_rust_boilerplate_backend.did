@@ -1,3 +1,32 @@
+type AppError = variant {
+  OperationFailed : text;
+  NotFound : text;
+  AlreadyExists : text;
+};
+type Result = variant { Ok : TrafficReport; Err : AppError };
+type Result_1 = variant { Ok : UserProfile; Err : AppError };
+type TrafficReport = record {
+  id : nat64;
+  resolved : bool;
+  description : text;
+  timestamp : nat64;
+  reporter_id : nat64;
+  severity : nat8;
+  location : text;
+};
+type UserProfile = record {
+  id : nat64;
+  username : text;
+  contributions : nat64;
+  route_tokens : nat64;
+  points : nat64;
+};
 service : {
-    "greet": (text) -> (text) query;
+  add_traffic_report : (text, text, nat8) -> (Result);
+  delete_traffic_report : (nat64) -> (Result);
+  delete_user_profile : (nat64) -> (Result_1);
+  get_traffic_report : (nat64) -> (Result) query;
+  get_user_profile : (nat64) -> (Result_1) query;
+  update_traffic_report : (nat64, opt text, opt text, opt nat8) -> (Result);
+  update_user_profile : (nat64, nat64) -> (Result_1);
 }
